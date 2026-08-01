@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SSC Daily</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ffffff">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <!-- Background Animated Blob -->
+    <div class="bg-blob"></div>
+
+    <header>
+        <div class="logo">SSC Daily</div>
+        <div class="header-actions">
+            <button id="mute-btn" class="icon-btn" aria-label="Toggle Sound">
+                <span id="mute-icon">🔇</span>
+            </button>
+            <div class="streak-header" id="streak-header" style="display: none;">
+                <span id="header-streak-count" class="display-font">0</span> <span id="header-flame" class="flame-icon">🔥</span>
+            </div>
+        </div>
+    </header>
+
+    <main id="app-container">
+        
+        <!-- COUNTDOWN VIEW -->
+        <div id="countdown-view" class="view hidden">
+            <h2>Next question drops in:</h2>
+            <div class="circular-timer-container">
+                <svg class="progress-ring" width="200" height="200">
+                    <circle class="progress-ring__circle" stroke="#e0e0e0" stroke-width="12" fill="transparent" r="90" cx="100" cy="100"/>
+                    <circle class="progress-ring__value" stroke="var(--primary)" stroke-width="12" fill="transparent" r="90" cx="100" cy="100" stroke-dasharray="565" stroke-dashoffset="0"/>
+                </svg>
+                <div id="countdown-timer" class="countdown-display display-font">--:--:--</div>
+            </div>
+            <p>A new question drops every day at 8:00 AM IST.</p>
+        </div>
+
+        <!-- QUESTION VIEW -->
+        <div id="question-view" class="view hidden">
+            <div class="question-header">
+                <span class="category-badge" id="question-category">Category</span>
+                <span class="timer display-font" id="question-timer">
+                    <span class="pulse-dot"></span> <span id="timer-val">0</span>s
+                </span>
+            </div>
+            <div class="question-text" id="question-text">
+                Loading today's question...
+            </div>
+            <div class="options-container" id="options-container">
+                <!-- Options injected by JS -->
+            </div>
+            <button id="submit-btn" class="primary-btn" disabled>Submit</button>
+        </div>
+
+        <!-- RESULT VIEW -->
+        <div id="result-view" class="view hidden">
+            <div class="result-status display-font" id="result-status">Correct!</div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-value display-font" id="result-time">0s</span>
+                    <span class="stat-label">Time</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value display-font" id="result-streak">0 🔥</span>
+                    <span class="stat-label">Streak</span>
+                </div>
+            </div>
+
+            <div class="explanation-box">
+                <strong>Explanation:</strong>
+                <p id="result-explanation">...</p>
+            </div>
+
+            <button id="share-btn" class="primary-btn share-btn">Share Result 🔗</button>
+
+            <div class="next-question-box">
+                <p>Next question in:</p>
+                <div id="result-countdown" class="countdown-display small display-font">--:--:--</div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Hidden Canvas for Share Image Generation -->
+    <canvas id="share-canvas" width="600" height="400" style="display: none;"></canvas>
+
+    <div id="toast" class="toast hidden">Copied to clipboard!</div>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

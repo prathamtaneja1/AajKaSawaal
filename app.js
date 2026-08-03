@@ -80,6 +80,31 @@ class SoundManager {
 
 const soundManager = new SoundManager();
 
+// --- Theme Manager ---
+const themeManager = {
+    isDark: localStorage.getItem('sscDailyTheme') === 'dark',
+    init() {
+        this.updateTheme();
+        const themeBtn = document.getElementById('theme-btn');
+        if (themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                this.isDark = !this.isDark;
+                localStorage.setItem('sscDailyTheme', this.isDark ? 'dark' : 'light');
+                this.updateTheme();
+            });
+        }
+    },
+    updateTheme() {
+        if (this.isDark) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.getElementById('theme-icon').textContent = '☀️';
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            document.getElementById('theme-icon').textContent = '🌙';
+        }
+    }
+};
+
 // --- State ---
 let questions = [];
 let todayQuestion = null;
@@ -96,6 +121,7 @@ const views = {
 
 // --- Initialization ---
 async function init() {
+    themeManager.init();
     loadStreakHeader();
     await fetchQuestions();
     
@@ -417,20 +443,20 @@ async function generateShareImage(history, streak) {
     const ctx = canvas.getContext('2d');
     
     // Background
-    ctx.fillStyle = '#fcfcfd';
+    ctx.fillStyle = themeManager.isDark ? '#111827' : '#fcfcfd';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     // Header gradient
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-    gradient.addColorStop(0, '#111827');
-    gradient.addColorStop(1, '#6366f1');
+    gradient.addColorStop(0, themeManager.isDark ? '#1f2937' : '#111827');
+    gradient.addColorStop(1, themeManager.isDark ? '#818cf8' : '#6366f1');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, 80);
     
     // Logo text
     ctx.fillStyle = 'white';
     ctx.font = 'bold 36px sans-serif'; // Fallback to safe fonts
-    ctx.fillText('SSC Daily', 30, 55);
+    ctx.fillText('AajKaSawaal', 30, 55);
     
     // Question number
     ctx.font = '24px sans-serif';
@@ -447,7 +473,7 @@ async function generateShareImage(history, streak) {
     ctx.textAlign = 'left';
     
     // Box 1 - Time
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = themeManager.isDark ? '#1f2937' : 'white';
     ctx.shadowColor = 'rgba(0,0,0,0.1)';
     ctx.shadowBlur = 15;
     ctx.roundRect = function (x, y, w, h, r) {
@@ -468,7 +494,7 @@ async function generateShareImage(history, streak) {
     
     ctx.shadowBlur = 0; // reset
     
-    ctx.fillStyle = '#111827';
+    ctx.fillStyle = themeManager.isDark ? '#f3f4f6' : '#111827';
     ctx.textAlign = 'center';
     ctx.font = 'bold 42px sans-serif';
     ctx.fillText(`${history.time}s`, 180, 280);
@@ -484,9 +510,9 @@ async function generateShareImage(history, streak) {
     ctx.fillText('DAY STREAK', 420, 315);
     
     // Footer
-    ctx.fillStyle = '#111827';
+    ctx.fillStyle = themeManager.isDark ? '#9ca3af' : '#111827';
     ctx.font = 'italic 16px sans-serif';
-    ctx.fillText('Play today at sscdaily.com', canvas.width / 2, 380);
+    ctx.fillText('Play today at aajkasawaal.com', canvas.width / 2, 380);
     
     return new Promise(resolve => {
         canvas.toBlob(blob => {
@@ -496,22 +522,22 @@ async function generateShareImage(history, streak) {
 }
 
 async function shareResult(history, streak) {
-    const shareText = `SSC Daily #${todayQuestion ? todayQuestion.id : ''} ${history.correct ? '✅' : '❌'}\nSolved in ${history.time}s 🔥 ${streak} day streak\nPlay today's question: ${window.location.href}`;
+    const shareText = `AajKaSawaal #${todayQuestion ? todayQuestion.id : ''} ${history.correct ? '✅' : '❌'}\nSolved in ${history.time}s 🔥 ${streak} day streak\nPlay today's question: ${window.location.href}`;
     
     try {
         const imageBlob = await generateShareImage(history, streak);
-        const file = new File([imageBlob], 'ssc-daily-result.png', { type: 'image/png' });
+        const file = new File([imageBlob], 'aajkasawaal-result.png', { type: 'image/png' });
         
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
             await navigator.share({
-                title: 'SSC Daily',
+                title: 'AajKaSawaal',
                 text: shareText,
                 files: [file]
             });
         } else if (navigator.share) {
             // Fallback to just text if files can't be shared
             await navigator.share({
-                title: 'SSC Daily',
+                title: 'AajKaSawaal',
                 text: shareText,
             });
         } else {

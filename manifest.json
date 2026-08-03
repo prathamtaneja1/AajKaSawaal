@@ -1,6 +1,6 @@
 {
-  "name": "AajKaSawaal",
-  "short_name": "AajKaSawaal",
+  "name": "SSC Daily",
+  "short_name": "SSC Daily",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",

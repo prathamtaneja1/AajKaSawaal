@@ -4,7 +4,7 @@ class SoundManager {
         this.ctx = null;
         this.muted = localStorage.getItem('sscDailyMuted') === 'true';
         this.updateIcon();
-        
+
         document.getElementById('mute-btn').addEventListener('click', () => {
             this.muted = !this.muted;
             localStorage.setItem('sscDailyMuted', this.muted);
@@ -80,31 +80,6 @@ class SoundManager {
 
 const soundManager = new SoundManager();
 
-// --- Theme Manager ---
-const themeManager = {
-    isDark: localStorage.getItem('sscDailyTheme') === 'dark',
-    init() {
-        this.updateTheme();
-        const themeBtn = document.getElementById('theme-btn');
-        if (themeBtn) {
-            themeBtn.addEventListener('click', () => {
-                this.isDark = !this.isDark;
-                localStorage.setItem('sscDailyTheme', this.isDark ? 'dark' : 'light');
-                this.updateTheme();
-            });
-        }
-    },
-    updateTheme() {
-        if (this.isDark) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            document.getElementById('theme-icon').textContent = '☀️';
-        } else {
-            document.documentElement.removeAttribute('data-theme');
-            document.getElementById('theme-icon').textContent = '🌙';
-        }
-    }
-};
-
 // --- State ---
 let questions = [];
 let todayQuestion = null;
@@ -121,10 +96,9 @@ const views = {
 
 // --- Initialization ---
 async function init() {
-    themeManager.init();
     loadStreakHeader();
     await fetchQuestions();
-    
+
     const gameState = getGameState();
     const { gameDateStr, nextDropTimeMs } = getGameTimeInfo();
 
@@ -155,11 +129,11 @@ function getGameTimeInfo() {
     const istOffset = 5.5 * 60 * 60 * 1000;
     const nowUtc = now.getTime() + (now.getTimezoneOffset() * 60000);
     const nowIst = new Date(nowUtc + istOffset);
-    
+
     let gameYear = nowIst.getFullYear();
     let gameMonth = nowIst.getMonth();
     let gameDate = nowIst.getDate();
-    
+
     if (nowIst.getHours() < 8) {
         const yesterday = new Date(nowIst);
         yesterday.setDate(yesterday.getDate() - 1);
@@ -167,15 +141,15 @@ function getGameTimeInfo() {
         gameMonth = yesterday.getMonth();
         gameDate = yesterday.getDate();
     }
-    
+
     const gameDateStr = `${gameYear}-${String(gameMonth + 1).padStart(2, '0')}-${String(gameDate).padStart(2, '0')}`;
-    
+
     const nextDropIst = new Date(nowIst);
     if (nowIst.getHours() >= 8) {
         nextDropIst.setDate(nextDropIst.getDate() + 1);
     }
     nextDropIst.setHours(8, 0, 0, 0);
-    
+
     const nextDropTimeMs = nextDropIst.getTime() - nowIst.getTime();
     return { gameDateStr, nextDropTimeMs: now.getTime() + nextDropTimeMs };
 }
@@ -210,10 +184,10 @@ function loadStreakHeader() {
     const streakEl = document.getElementById('header-streak-count');
     const headerEl = document.getElementById('streak-header');
     const flameEl = document.getElementById('header-flame');
-    
+
     streakEl.textContent = state.streak;
     headerEl.style.display = state.streak > 0 ? 'flex' : 'none';
-    
+
     if (state.streak >= 3) {
         flameEl.classList.add('flicker');
     } else {
@@ -231,10 +205,10 @@ function showView(viewName) {
 function setupQuestionView(q) {
     document.getElementById('question-category').textContent = q.category;
     document.getElementById('question-text').textContent = q.question;
-    
+
     const optionsContainer = document.getElementById('options-container');
     optionsContainer.innerHTML = '';
-    
+
     q.options.forEach((opt, index) => {
         const btn = document.createElement('button');
         btn.className = 'option-btn';
@@ -248,11 +222,11 @@ function setupQuestionView(q) {
     submitBtn.disabled = true;
 
     showView('question');
-    
+
     timeTakenSeconds = 0;
     const timerVal = document.getElementById('timer-val');
     timerVal.textContent = '0';
-    
+
     timerInterval = setInterval(() => {
         timeTakenSeconds++;
         timerVal.textContent = timeTakenSeconds;
@@ -272,17 +246,17 @@ function selectOption(index, btnEl) {
 
 function submitAnswer() {
     clearInterval(timerInterval);
-    
+
     const isCorrect = selectedOptionIndex === todayQuestion.correctIndex;
     const { gameDateStr, nextDropTimeMs } = getGameTimeInfo();
     const state = getGameState();
-    
+
     const selectedBtn = document.querySelectorAll('.option-btn')[selectedOptionIndex];
-    
+
     if (isCorrect) {
         soundManager.playCorrect();
         selectedBtn.classList.add('correct-answer');
-        
+
         // Confetti
         if (typeof confetti === 'function') {
             confetti({
@@ -292,7 +266,7 @@ function submitAnswer() {
                 colors: ['#10b981', '#6366f1', '#f59e0b']
             });
         }
-        
+
         setTimeout(() => {
             state.streak += 1;
             finalizeSubmit(state, gameDateStr, nextDropTimeMs, isCorrect);
@@ -300,7 +274,7 @@ function submitAnswer() {
     } else {
         soundManager.playWrong();
         selectedBtn.classList.add('wrong-answer');
-        
+
         // Highlight correct answer
         setTimeout(() => {
             const correctBtn = document.querySelectorAll('.option-btn')[todayQuestion.correctIndex];
@@ -323,7 +297,7 @@ function finalizeSubmit(state, gameDateStr, nextDropTimeMs, isCorrect) {
         selected: selectedOptionIndex
     };
     saveGameState(state);
-    
+
     if (document.startViewTransition) {
         document.startViewTransition(() => {
             loadStreakHeader();
@@ -339,11 +313,11 @@ function finalizeSubmit(state, gameDateStr, nextDropTimeMs, isCorrect) {
 function showResultView(state, nextDropTimeMs, justAnswered = false) {
     const { gameDateStr } = getGameTimeInfo();
     const history = state.history[gameDateStr];
-    
+
     if (!todayQuestion) {
         todayQuestion = questions.find(q => q.date === gameDateStr);
     }
-    
+
     const statusEl = document.getElementById('result-status');
     if (history.correct) {
         statusEl.textContent = "Correct!";
@@ -352,11 +326,11 @@ function showResultView(state, nextDropTimeMs, justAnswered = false) {
         statusEl.textContent = "Incorrect";
         statusEl.className = "result-status incorrect display-font";
     }
-    
+
     // Animate stats counting up if just answered
     const timeEl = document.getElementById('result-time');
     const streakEl = document.getElementById('result-streak');
-    
+
     if (justAnswered) {
         animateNumber(timeEl, 0, history.time, 's');
         animateNumber(streakEl, 0, state.streak, ' 🔥');
@@ -364,13 +338,13 @@ function showResultView(state, nextDropTimeMs, justAnswered = false) {
         timeEl.textContent = `${history.time}s`;
         streakEl.textContent = `${state.streak} 🔥`;
     }
-    
+
     if (todayQuestion) {
         document.getElementById('result-explanation').textContent = todayQuestion.explanation;
     }
 
     document.getElementById('share-btn').onclick = async () => await shareResult(history, state.streak);
-    
+
     startCountdown(nextDropTimeMs, 'result-countdown');
     showView('result');
 }
@@ -379,12 +353,12 @@ function animateNumber(el, start, end, suffix) {
     let current = start;
     const duration = 1000;
     const stepTime = Math.abs(Math.floor(duration / (end - start || 1)));
-    
+
     if (start === end) {
         el.textContent = end + suffix;
         return;
     }
-    
+
     const timer = setInterval(() => {
         current += 1;
         el.textContent = current + suffix;
@@ -397,34 +371,34 @@ function animateNumber(el, start, end, suffix) {
 // --- Countdown Logic ---
 function startCountdown(targetTimeMs, elementId = 'countdown-timer') {
     if (countdownInterval) clearInterval(countdownInterval);
-    
+
     const el = document.getElementById(elementId);
     const circle = document.querySelector('.progress-ring__value');
     const radius = circle ? circle.r.baseVal.value : 0;
     const circumference = radius * 2 * Math.PI;
-    
+
     if (circle) {
         circle.style.strokeDasharray = `${circumference} ${circumference}`;
         circle.style.strokeDashoffset = circumference;
     }
-    
+
     const update = () => {
         const now = new Date().getTime();
         const diff = targetTimeMs - now;
-        
+
         if (diff <= 0) {
             el.textContent = "00:00:00";
             clearInterval(countdownInterval);
             setTimeout(() => window.location.reload(), 1000);
             return;
         }
-        
+
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const s = Math.floor((diff % (1000 * 60)) / 1000);
-        
+
         el.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        
+
         if (circle && elementId === 'countdown-timer') {
             const totalMsInDay = 24 * 60 * 60 * 1000;
             const percentage = diff / totalMsInDay;
@@ -432,7 +406,7 @@ function startCountdown(targetTimeMs, elementId = 'countdown-timer') {
             circle.style.strokeDashoffset = offset;
         }
     };
-    
+
     update();
     countdownInterval = setInterval(update, 1000);
 }
@@ -441,79 +415,79 @@ function startCountdown(targetTimeMs, elementId = 'countdown-timer') {
 async function generateShareImage(history, streak) {
     const canvas = document.getElementById('share-canvas');
     const ctx = canvas.getContext('2d');
-    
+
     // Background
-    ctx.fillStyle = themeManager.isDark ? '#111827' : '#fcfcfd';
+    ctx.fillStyle = '#fcfcfd';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
+
     // Header gradient
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-    gradient.addColorStop(0, themeManager.isDark ? '#1f2937' : '#111827');
-    gradient.addColorStop(1, themeManager.isDark ? '#818cf8' : '#6366f1');
+    gradient.addColorStop(0, '#111827');
+    gradient.addColorStop(1, '#6366f1');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, 80);
-    
+
     // Logo text
     ctx.fillStyle = 'white';
     ctx.font = 'bold 36px sans-serif'; // Fallback to safe fonts
-    ctx.fillText('AajKaSawaal', 30, 55);
-    
+    ctx.fillText('SSC Daily', 30, 55);
+
     // Question number
     ctx.font = '24px sans-serif';
     ctx.fillText(`#${todayQuestion ? todayQuestion.id : ''}`, canvas.width - 80, 52);
-    
+
     // Result icon and text
     const isCorrect = history.correct;
     ctx.fillStyle = isCorrect ? '#10b981' : '#ef4444';
     ctx.font = 'bold 64px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText(isCorrect ? 'Correct!' : 'Incorrect', canvas.width / 2, 170);
-    
+
     // Stats boxes
     ctx.textAlign = 'left';
-    
+
     // Box 1 - Time
-    ctx.fillStyle = themeManager.isDark ? '#1f2937' : 'white';
+    ctx.fillStyle = 'white';
     ctx.shadowColor = 'rgba(0,0,0,0.1)';
     ctx.shadowBlur = 15;
     ctx.roundRect = function (x, y, w, h, r) {
         if (w < 2 * r) r = w / 2;
         if (h < 2 * r) r = h / 2;
         this.beginPath();
-        this.moveTo(x+r, y);
-        this.arcTo(x+w, y,   x+w, y+h, r);
-        this.arcTo(x+w, y+h, x,   y+h, r);
-        this.arcTo(x,   y+h, x,   y,   r);
-        this.arcTo(x,   y,   x+w, y,   r);
+        this.moveTo(x + r, y);
+        this.arcTo(x + w, y, x + w, y + h, r);
+        this.arcTo(x + w, y + h, x, y + h, r);
+        this.arcTo(x, y + h, x, y, r);
+        this.arcTo(x, y, x + w, y, r);
         this.closePath();
         return this;
     }
-    
+
     ctx.roundRect(80, 220, 200, 120, 16).fill();
     ctx.roundRect(320, 220, 200, 120, 16).fill();
-    
+
     ctx.shadowBlur = 0; // reset
-    
-    ctx.fillStyle = themeManager.isDark ? '#f3f4f6' : '#111827';
+
+    ctx.fillStyle = '#111827';
     ctx.textAlign = 'center';
     ctx.font = 'bold 42px sans-serif';
     ctx.fillText(`${history.time}s`, 180, 280);
     ctx.fillText(`${streak}`, 410, 280);
-    
+
     // Emojis might not render well in all Canvas implementations, fallback to simple text
     ctx.font = '32px sans-serif';
     ctx.fillText('🔥', 455, 280);
-    
+
     ctx.fillStyle = '#6b7280';
     ctx.font = '18px sans-serif';
     ctx.fillText('TIME TAKEN', 180, 315);
     ctx.fillText('DAY STREAK', 420, 315);
-    
+
     // Footer
-    ctx.fillStyle = themeManager.isDark ? '#9ca3af' : '#111827';
+    ctx.fillStyle = '#111827';
     ctx.font = 'italic 16px sans-serif';
-    ctx.fillText('Play today at aajkasawaal.com', canvas.width / 2, 380);
-    
+    ctx.fillText('Play today at sscdaily.com', canvas.width / 2, 380);
+
     return new Promise(resolve => {
         canvas.toBlob(blob => {
             resolve(blob);
@@ -522,22 +496,22 @@ async function generateShareImage(history, streak) {
 }
 
 async function shareResult(history, streak) {
-    const shareText = `AajKaSawaal #${todayQuestion ? todayQuestion.id : ''} ${history.correct ? '✅' : '❌'}\nSolved in ${history.time}s 🔥 ${streak} day streak\nPlay today's question: ${window.location.href}`;
-    
+    const shareText = `SSC Daily #${todayQuestion ? todayQuestion.id : ''} ${history.correct ? '✅' : '❌'}\nSolved in ${history.time}s 🔥 ${streak} day streak\nPlay today's question: ${window.location.href}`;
+
     try {
         const imageBlob = await generateShareImage(history, streak);
-        const file = new File([imageBlob], 'aajkasawaal-result.png', { type: 'image/png' });
-        
+        const file = new File([imageBlob], 'ssc-daily-result.png', { type: 'image/png' });
+
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
             await navigator.share({
-                title: 'AajKaSawaal',
+                title: 'SSC Daily',
                 text: shareText,
                 files: [file]
             });
         } else if (navigator.share) {
             // Fallback to just text if files can't be shared
             await navigator.share({
-                title: 'AajKaSawaal',
+                title: 'SSC Daily',
                 text: shareText,
             });
         } else {

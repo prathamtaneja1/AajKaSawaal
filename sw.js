@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ssc-daily-v1';
+const CACHE_NAME = 'aajkasawaal-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

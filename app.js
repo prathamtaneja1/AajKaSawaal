@@ -430,7 +430,7 @@ async function generateShareImage(history, streak) {
     // Logo text
     ctx.fillStyle = 'white';
     ctx.font = 'bold 36px sans-serif'; // Fallback to safe fonts
-    ctx.fillText('SSC Daily', 30, 55);
+    ctx.fillText('Aaj Ka Sawaal', 30, 55);
 
     // Question number
     ctx.font = '24px sans-serif';
@@ -482,11 +482,6 @@ async function generateShareImage(history, streak) {
     ctx.font = '18px sans-serif';
     ctx.fillText('TIME TAKEN', 180, 315);
     ctx.fillText('DAY STREAK', 420, 315);
-
-    // Footer
-    ctx.fillStyle = '#111827';
-    ctx.font = 'italic 16px sans-serif';
-    ctx.fillText('Play today at sscdaily.com', canvas.width / 2, 380);
 
     return new Promise(resolve => {
         canvas.toBlob(blob => {

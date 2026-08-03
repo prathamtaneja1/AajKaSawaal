@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aajkasawaal-v2';
+const CACHE_NAME = 'aajkasawaal-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

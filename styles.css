@@ -3,6 +3,8 @@
     --text-main: #111827;
     --text-light: #6b7280;
     --border-color: #e5e7eb;
+    --surface-color: #ffffff;
+    --header-bg: rgba(255, 255, 255, 0.8);
 
     /* Vibrant modern palette */
     --primary: #6366f1;
@@ -31,6 +33,29 @@
     --safe-bottom: env(safe-area-inset-bottom, 0px);
     --safe-left: env(safe-area-inset-left, 0px);
     --safe-right: env(safe-area-inset-right, 0px);
+}
+
+:root[data-theme="dark"] {
+    --bg-color: #111827;
+    --text-main: #f3f4f6;
+    --text-light: #9ca3af;
+    --border-color: #374151;
+    --surface-color: #1f2937;
+    --header-bg: rgba(17, 24, 39, 0.8);
+    
+    --primary: #818cf8; /* Lighter Indigo */
+    --primary-glow: rgba(129, 140, 248, 0.2);
+    --correct-bg: #10b981; 
+    --correct-glow: rgba(16, 185, 129, 0.4);
+    --incorrect-bg: #ef4444; 
+    --incorrect-glow: rgba(239, 68, 68, 0.3);
+    --streak-color: #f59e0b; 
+    
+    --btn-bg: #f3f4f6;
+    --btn-text: #111827;
+    --btn-disabled: #4b5563;
+    --option-bg: #1f2937;
+    --option-selected-border: var(--primary);
 }
 
 * {
@@ -87,8 +112,8 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: calc(16px + var(--safe-top)) calc(20px + var(--safe-right)) 16px calc(20px + var(--safe-left));
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    background: rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid var(--border-color);
+    background: var(--header-bg);
     backdrop-filter: blur(10px);
     z-index: 10;
 }
@@ -116,7 +141,9 @@ header {
     cursor: pointer;
     padding: 8px;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.03);
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
     transition: transform 0.2s;
 }
 
@@ -400,7 +427,7 @@ main::-webkit-scrollbar {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    background: white;
+    background: var(--surface-color);
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
@@ -422,7 +449,7 @@ main::-webkit-scrollbar {
 }
 
 .explanation-box {
-    background-color: white;
+    background-color: var(--surface-color);
     border-radius: 16px;
     padding: 20px;
     font-size: 1.05rem;
@@ -503,7 +530,7 @@ main::-webkit-scrollbar {
     left: 50%;
     transform: translateX(-50%);
     background: var(--text-main);
-    color: white;
+    color: var(--bg-color);
     padding: 14px 28px;
     border-radius: 30px;
     font-weight: 600;

@@ -67,10 +67,14 @@
         <!-- QUESTION VIEW -->
         <div id="question-view" class="view hidden">
             <div class="question-header">
-                <span class="category-badge" id="question-category">Category</span>
-                <span class="timer display-font" id="question-timer">
-                    <span class="pulse-dot"></span> <span id="timer-val">0</span>s
-                </span>
+                <div>
+                    <span class="category-badge" id="question-category">Category</span>
+                    <span class="difficulty-badge" id="question-difficulty">Medium</span>
+                </div>
+                <div class="timer" id="question-timer">
+                    <div class="pulse-dot"></div>
+                    <span id="timer-val">0</span>s
+                </div>
             </div>
             <div class="question-text" id="question-text">
                 Loading today's question...

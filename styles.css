@@ -225,6 +225,16 @@ main::-webkit-scrollbar {
     letter-spacing: 0.5px;
 }
 
+.difficulty-badge {
+    background: var(--border-color);
+    color: var(--text-main);
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-left: 8px;
+}
+
 .timer {
     font-variant-numeric: tabular-nums;
     font-weight: 700;

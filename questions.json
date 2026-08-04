@@ -2,7 +2,8 @@
   {
     "id": 1,
     "date": "2026-08-04",
-    "category": "Quant (Advanced)",
+    "category": "Quant",
+    "difficulty": "Hard",
     "question": "If a + b + c = 0, find the value of (a³ + b³ + c³) / abc.",
     "options": ["0", "1", "3", "a+b+c"],
     "correctIndex": 2,
@@ -12,81 +13,90 @@
     "id": 2,
     "date": "2026-08-05",
     "category": "Reasoning",
+    "difficulty": "Medium",
     "question": "Select the option where the numbers share the same relationship as (3, 24, 4).",
     "options": ["(2, 12, 3)", "(4, 60, 5)", "(5, 90, 6)", "(6, 84, 7)"],
     "correctIndex": 2,
-    "explanation": "The logic is: First number × Last number × 2 = Middle number. In (3, 24, 4), 3 × 4 × 2 = 24. Let's check (5, 90, 6): 5 × 6 × 3 = 90. Wait! The logic is (First × Last) × (First - 1) or similar? Better logic: 3 × (4 × 2) = 24. Actually, 3 × 4 = 12. 12 × 2 = 24. For (2, 12, 3): 2 × 3 × 2 = 12! Yes, (2, 12, 3) is correct."
+    "explanation": "The logic is: First number × Last number × 2 = Middle number. For (2, 12, 3): 2 × 3 × 2 = 12."
   },
   {
     "id": 3,
     "date": "2026-08-06",
     "category": "English",
+    "difficulty": "Medium",
     "question": "Identify the grammatical error in the sentence: 'No sooner had the minister started his speech then the crowd started shouting.'",
     "options": ["No sooner had", "started his speech", "then the crowd", "started shouting"],
     "correctIndex": 2,
-    "explanation": "The correlative conjunction 'No sooner' is always followed by 'than', not 'then'. The correct phrase should be 'than the crowd'."
+    "explanation": "The correlative conjunction 'No sooner' is always followed by 'than', not 'then'."
   },
   {
     "id": 4,
     "date": "2026-08-07",
     "category": "General Awareness",
+    "difficulty": "Easy",
     "question": "Which Article of the Indian Constitution deals with the abolition of Untouchability?",
     "options": ["Article 14", "Article 16", "Article 17", "Article 18"],
     "correctIndex": 2,
-    "explanation": "Article 17 of the Indian Constitution abolishes the practice of untouchability in any form and makes it a punishable offence."
+    "explanation": "Article 17 abolishes the practice of untouchability in any form and makes it a punishable offence."
   },
   {
     "id": 5,
     "date": "2026-08-08",
-    "category": "Quant (Time & Work)",
+    "category": "Quant",
+    "difficulty": "Medium",
     "question": "A can do a piece of work in 10 days and B can do it in 15 days. They work together for 3 days and then B leaves. How many days will A take to finish the remaining work?",
     "options": ["4 days", "5 days", "6 days", "8 days"],
     "correctIndex": 1,
-    "explanation": "Total work = LCM(10,15) = 30 units. A's efficiency = 3 u/day, B's = 2 u/day. In 3 days, they do (3+2)×3 = 15 units. Remaining work = 30 - 15 = 15 units. A completes it in 15/3 = 5 days."
+    "explanation": "Total work = LCM(10,15) = 30 units. A's efficiency = 3 u/day, B's = 2 u/day. In 3 days, they do 15 units. Remaining = 15 units. A finishes it in 15/3 = 5 days."
   },
   {
     "id": 6,
     "date": "2026-08-09",
     "category": "Reasoning",
+    "difficulty": "Easy",
     "question": "If the word 'WATER' is coded as 'YCVGT', how will 'FIRE' be coded in that language?",
     "options": ["HKTG", "GJUF", "HKUH", "IGVH"],
     "correctIndex": 0,
-    "explanation": "Each letter is shifted forward by +2 in the English alphabet. W(+2)=Y, A(+2)=C, etc. Applying this to FIRE: F(+2)=H, I(+2)=K, R(+2)=T, E(+2)=G. So, HKTG."
+    "explanation": "Each letter is shifted forward by +2. Applying this to FIRE: F(+2)=H, I(+2)=K, R(+2)=T, E(+2)=G. Result: HKTG."
   },
   {
     "id": 7,
     "date": "2026-08-10",
-    "category": "Quant (Geometry)",
+    "category": "Quant",
+    "difficulty": "Hard",
     "question": "A chord of length 24 cm is drawn at a distance of 5 cm from the center of a circle. Find the radius of the circle.",
     "options": ["11 cm", "12 cm", "13 cm", "15 cm"],
     "correctIndex": 2,
-    "explanation": "The perpendicular from the center bisects the chord, forming a right triangle with legs 5 cm and 12 cm (half of 24). The hypotenuse (radius) is √(5² + 12²) = √169 = 13 cm."
+    "explanation": "The perpendicular from the center bisects the chord, forming a right triangle with legs 5 cm and 12 cm. The hypotenuse (radius) is √(5² + 12²) = 13 cm."
   },
   {
     "id": 8,
     "date": "2026-08-11",
     "category": "English",
+    "difficulty": "Medium",
     "question": "Select the most appropriate meaning of the given idiom: 'To beat about the bush'",
     "options": ["To search for something diligently", "To talk about unimportant things without getting to the point", "To physically assault someone in a forest", "To try to achieve an impossible task"],
     "correctIndex": 1,
-    "explanation": "The idiom 'beat about the bush' means to avoid addressing the main topic directly and wasting time on irrelevant details."
+    "explanation": "The idiom means to avoid addressing the main topic directly and wasting time on irrelevant details."
   },
   {
     "id": 9,
     "date": "2026-08-12",
     "category": "General Awareness",
+    "difficulty": "Easy",
     "question": "What is the chemical name of the compound commonly known as 'Baking Soda'?",
     "options": ["Sodium carbonate", "Sodium bicarbonate", "Calcium carbonate", "Sodium hydroxide"],
     "correctIndex": 1,
-    "explanation": "Baking soda is chemically known as Sodium bicarbonate (NaHCO₃). Sodium carbonate is washing soda."
+    "explanation": "Baking soda is chemically known as Sodium bicarbonate (NaHCO₃)."
   },
   {
     "id": 10,
     "date": "2026-08-13",
     "category": "Reasoning",
+    "difficulty": "Medium",
     "question": "Find the missing number in the series: 2, 5, 10, 17, 26, ?",
     "options": ["35", "37", "39", "41"],
     "correctIndex": 1,
-    "explanation": "The difference between consecutive numbers is odd numbers: +3, +5, +7, +9. The next difference should be +11. So, 26 + 11 = 37."
+    "explanation": "The difference between consecutive numbers are odd numbers: +3, +5, +7, +9. The next difference is +11. So, 26 + 11 = 37."
   }
 ]

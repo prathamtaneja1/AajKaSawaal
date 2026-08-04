@@ -232,6 +232,17 @@ function setupQuestionView(q) {
     document.getElementById('question-category').textContent = q.category;
     document.getElementById('question-text').textContent = q.question;
 
+    const diffEl = document.getElementById('question-difficulty');
+    if (diffEl && q.difficulty) {
+        let emoji = '🟢';
+        if (q.difficulty === 'Medium') emoji = '🟡';
+        if (q.difficulty === 'Hard') emoji = '🔴';
+        diffEl.textContent = `${emoji} ${q.difficulty}`;
+        diffEl.style.display = 'inline-block';
+    } else if (diffEl) {
+        diffEl.style.display = 'none';
+    }
+
     const optionsContainer = document.getElementById('options-container');
     optionsContainer.innerHTML = '';
 
@@ -517,7 +528,14 @@ async function generateShareImage(history, streak) {
 }
 
 async function shareResult(history, streak) {
-    const shareText = `Aaj Ka Sawaal #${todayQuestion ? todayQuestion.id : ''} ${history.correct ? '✅' : '❌'}\nSolved in ${history.time}s 🔥 ${streak} day streak\nPlay today's question: ${window.location.href}`;
+    let diffStr = '';
+    if (todayQuestion && todayQuestion.difficulty) {
+        let emoji = '🟢';
+        if (todayQuestion.difficulty === 'Medium') emoji = '🟡';
+        if (todayQuestion.difficulty === 'Hard') emoji = '🔴';
+        diffStr = `(${emoji} ${todayQuestion.difficulty}) `;
+    }
+    const shareText = `Aaj Ka Sawaal #${todayQuestion ? todayQuestion.id : ''} ${diffStr}${history.correct ? '✅' : '❌'}\nSolved in ${history.time}s 🔥 ${streak} day streak\nPlay today's question: ${window.location.href}`;
 
     try {
         const imageBlob = await generateShareImage(history, streak);

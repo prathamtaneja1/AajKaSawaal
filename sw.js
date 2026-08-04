@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aajkasawaal-v7';
+const CACHE_NAME = 'aajkasawaal-v8';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -21,6 +21,29 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
+  // Network-First strategy for questions.json
+  if (event.request.url.includes('questions.json')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          // If the network request is successful, clone the response and update the cache
+          if (response && response.status === 200) {
+            const responseToCache = response.clone();
+            caches.open(CACHE_NAME).then(cache => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          // If the network fails (user is offline), fall back to the cached version
+          return caches.match(event.request);
+        })
+    );
+    return;
+  }
+
+  // Cache-First strategy for all other assets (HTML, CSS, JS, Images)
   event.respondWith(
     caches.match(event.request)
       .then(response => {
@@ -34,10 +57,7 @@ self.addEventListener('fetch', event => {
               return response;
             }
 
-            // IMPORTANT: Clone the response. A response is a stream
-            // and because we want the browser to consume the response
-            // as well as the cache consuming the response, we need
-            // to clone it so we have two streams.
+            // IMPORTANT: Clone the response.
             var responseToCache = response.clone();
 
             caches.open(CACHE_NAME)
